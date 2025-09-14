@@ -22,10 +22,25 @@ body {
     grid-template-columns: 1fr;
     grid-gap: 20px;
 }
+.attribute-container-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.description-field {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    flex: 1;
+}
 .attribute-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 15px;
+    flex: 1;
 }
 .attribute {
     background-color: #f9f9f9;
@@ -46,10 +61,6 @@ body {
 .attribute-rolls {
     font-size: 0.8em;
     color: #888;
-}
-.pip-value {
-    border: 1px solid #ccc;
-    font-size: 0.8em;
 }
 .hp-cores, .item-list {
     padding-top: 20px;
