@@ -108,6 +108,11 @@ function loadCharacter() {
     }
 }
 
+function deleteCharacter() {
+    document.cookie = "mausritter_char=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    alert("Gespeicherter Charakter wurde gelöscht.");
+}
+
 function swapAttributes(attr1, attr2) {
     if (confirm("Sollen die Werte von " + attr1.toUpperCase() + " und " + attr2.toUpperCase() + " wirklich getauscht werden?")) {
         const value1 = document.getElementById(attr1 + "-value");
