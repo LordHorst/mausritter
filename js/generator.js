@@ -117,7 +117,26 @@ function parseCSV(csvString) {
   
   const result = [];
   for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].match(/(".*?"|[^";\s]+)(?=\s*;|\s*$)/g).map(v => v.replace(/"/g, ''));
+    const values = [];
+    let line = lines[i];
+    let inQuotes = false;
+    let currentField = '';
+    
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      if (char === '"' && !inQuotes) {
+        inQuotes = true;
+      } else if (char === '"' && inQuotes) {
+        inQuotes = false;
+      } else if (char === ';' && !inQuotes) {
+        values.push(currentField.trim());
+        currentField = '';
+      } else {
+        currentField += char;
+      }
+    }
+    values.push(currentField.trim());
+    
     const entry = {};
     headers.forEach((header, index) => {
       entry[header] = values[index];
