@@ -109,8 +109,26 @@ function loadCharacter() {
 }
 
 function deleteCharacter() {
-    document.cookie = "mausritter_char=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    alert("Gespeicherter Charakter wurde gelöscht.");
+    // Sicherheitsabfrage mit Bestätigung
+    if (confirm("Soll der gespeicherte Charakter wirklich gelöscht werden?")) {
+        // Löscht das Cookie, indem das Ablaufdatum in die Vergangenheit gesetzt wird
+        document.cookie = "mausritter_char=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        
+        // Leert die Charakterfelder
+        document.getElementById("name-input").value = "";
+        document.getElementById("str-value").innerHTML = "";
+        document.getElementById("str-rolls").innerHTML = "";
+        document.getElementById("dex-value").innerHTML = "";
+        document.getElementById("dex-rolls").innerHTML = "";
+        document.getElementById("wil-value").innerHTML = "";
+        document.getElementById("wil-rolls").innerHTML = "";
+        document.getElementById("hp-value").innerHTML = "";
+
+        // Graut den Löschen-Button aus
+        document.getElementById("delete-character").disabled = true;
+
+        alert("Gespeicherter Charakter wurde gelöscht.");
+    }
 }
 
 function swapAttributes(attr1, attr2) {
