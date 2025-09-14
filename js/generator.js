@@ -1,3 +1,62 @@
+// --- Die "Tant"-Auswahl ---
+const tantList = [
+    // Gruppe für W6-Ergebnis 2
+    [
+        "Trockene Kräuter in wasserdichtem Beutel",
+        "Eine kleine Holzkiste, die seltsame Geräusche macht",
+        "Ein starker Käfer mit einem Rucksack",
+        "Ein verrostetes Schwert",
+        "Ein verschlossenes Holzschloss",
+        "Eine Flasche mit glühendem, grünem Schleim",
+        "Ein Paar zerzauste Flügel",
+        "Ein altes verkrustetes Ei"
+    ],
+    // Gruppe für W6-Ergebnis 3
+    [
+        "Eine Karte, die einen verborgenen Schatz in einer Siedlung zeigt",
+        "Ein alter Hut, der zu klein ist",
+        "Ein leeres Glas",
+        "Ein leeres Lagerfeuer",
+        "Eine kleine Holzkiste",
+        "Eine leere Spule Garn",
+        "Eine Pfeife",
+        "Eine leere Karte"
+    ],
+    // Gruppe für W6-Ergebnis 4
+    [
+        "Eine Handvoll Pilze",
+        "Ein alter Ring mit einem fehlenden Stein",
+        "Eine Flasche Wein",
+        "Ein altes, vergilbtes Dokument",
+        "Eine Karte mit einer mysteriösen Markierung",
+        "Eine Schachtel mit zerbrochenem Glas",
+        "Eine alte Münze",
+        "Ein kleines Stück Käse"
+    ],
+    // Gruppe für W6-Ergebnis 5
+    [
+        "Ein kleiner, glänzender Stein",
+        "Eine leere Flasche",
+        "Ein alter Schuh",
+        "Eine kleine Pfeife",
+        "Ein leerer Beutel",
+        "Ein seltsamer Schlüssel",
+        "Eine kleine Rolle Seil",
+        "Ein alter Holzstock"
+    ],
+    // Gruppe für W6-Ergebnis 6
+    [
+        "Ein kaputter Kompass",
+        "Eine alte, leere Laterne",
+        "Ein kleines Holzschiff",
+        "Eine leere Schachtel mit einem geheimnisvollen Geruch",
+        "Eine alte, rostige Axt",
+        "Ein Beutel mit glitzernden Steinen",
+        "Ein kleines, kaputtes Teleskop",
+        "Eine alte, lederne Trinkflasche"
+    ]
+];
+
 // Hintergrund-Daten aus der CSV-Datei als String.
 const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 1;1;Versuchstier;Zauber: Magisches Geschoss;Bleimantel (Schwere Rüstung)
@@ -37,6 +96,39 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 6;5;Bibliothekar;Buchfetzen;Feder & Tinte
 6;6;Verarmter Edelnager;Filzhut;Parfüm`
 
+/*Würfel*/
+function rollD6() {
+    return Math.floor(Math.random() * 6) + 1;
+}
+function rollD8() {
+    return Math.floor(Math.random() * 8) + 1;
+}
+/*Würfel Ende*/
+
+function generateTant() {
+    const d6 = rollD6();
+    const d8 = rollD8();
+
+    if (d6 === 1) {
+        // Fall 1: W6 = 1 -> Extra Pips
+        const currentPips = parseInt(document.getElementById("pip-value").innerHTML) || 0;
+        const newPips = currentPips + d8;
+        document.getElementById("pip-value").innerHTML = newPips;
+        document.getElementById("description-value").innerHTML = `+${d8} Pips (gewürfelt mit W6=1, W8=${d8})`;
+    } else {
+        // Fall 2: W6 > 1 -> Beschreibung
+        const groupIndex = d6 - 2;
+        const itemIndex = d8 - 1;
+        
+        if (tantList[groupIndex] && tantList[groupIndex][itemIndex]) {
+            const description = tantList[groupIndex][itemIndex];
+            document.getElementById("description-value").innerHTML = description;
+        } else {
+            document.getElementById("description-value").innerHTML = "Fehler bei der Generierung.";
+        }
+    }
+}
+
 // Funktion zum Parsen des CSV-Strings in ein Array von Objekten
 function parseCSV(csvString) {
   const lines = csvString.trim().split('\n');
@@ -74,10 +166,6 @@ function parseCSV(csvString) {
 }
 
 const backgrounds = parseCSV(backgroundCSV);
-
-function rollD6() {
-    return Math.floor(Math.random() * 6) + 1;
-}
 
 function generateAttribute() {
     const roll1 = rollD6();
@@ -119,10 +207,10 @@ function generateNewCharacter() {
     const dexterity = generateAttribute();
     const willpower = generateAttribute();
     const hitPoints = rollD6();
-    const cores = rollD6();
+    const pips = rollD6();
     const name = generateName();
 
-    const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == cores);
+    const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == pips);
     const backgroundText = background ? background["Beruf/Hintergrund"] : "Unbekannt";
     const itemA = background ? background["Gegenstand A"] : "Nichts";
     const itemB = background ? background["Gegenstand B"] : "Nichts";
@@ -135,7 +223,7 @@ function generateNewCharacter() {
     document.getElementById("wil-value").innerHTML = willpower.value;
     document.getElementById("wil-rolls").innerHTML = willpower.rolls;
     document.getElementById("hp-value").innerHTML = hitPoints;
-    document.getElementById("pip-value").innerHTML = cores;
+    document.getElementById("pip-value").innerHTML = pips;
     document.getElementById("background-name").innerHTML = backgroundText;
 
     document.getElementById("item-1").innerHTML = itemA;
@@ -144,6 +232,9 @@ function generateNewCharacter() {
     for (let i = 3; i <= 10; i++) {
         document.getElementById(`item-${i}`).innerHTML = "";
     }
+
+    // Jetzt noch den Tant generieren
+    generateTant();
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
@@ -171,6 +262,7 @@ function renderSavedCharacters() {
                 <div class="card-name">${char.name}</div>
                 <div class="card-stats">Str: ${char.strengthValue} | Dex: ${char.dexterityValue} | Wil: ${char.willpowerValue}</div>
                 <div class="card-stats">TP: ${char.hp} | Pips: ${char.pips}</div>
+                <div class="card-stats">Beschreibung: ${char.description}</div>
             `;
             container.appendChild(card);
         });
@@ -206,6 +298,7 @@ function saveCharacter() {
         willpowerRolls: document.getElementById("wil-rolls").innerHTML,
         hp: document.getElementById("hp-value").innerHTML,
         pips: document.getElementById("pip-value").innerHTML,
+        description: document.getElementById("description-value").innerHTML, 
         backgroundName: document.getElementById("background-name").innerHTML,
         items: items,
         swapDone: document.getElementById("swap-str-dex").disabled
@@ -246,6 +339,7 @@ function loadCharacter(index) {
         document.getElementById("wil-rolls").innerHTML = char.willpowerRolls;
         document.getElementById("hp-value").innerHTML = char.hp;
         document.getElementById("pip-value").innerHTML = char.pips;
+        document.getElementById("description-value").innerHTML = char.description;
         document.getElementById("background-name").innerHTML = char.backgroundName;
         
         for (let i = 1; i <= 10; i++) {
@@ -287,6 +381,7 @@ function deleteCharacter() {
             document.getElementById("hp-value").innerHTML = "";
             document.getElementById("pip-value").innerHTML = "";
             document.getElementById("background-name").innerHTML = "";
+            document.getElementById("description-value").innerHTML = "";
             
             for (let i = 1; i <= 10; i++) {
                 document.getElementById(`item-${i}`).innerHTML = "";
