@@ -180,7 +180,7 @@ function generateTant() {
         const currentPips = parseInt(document.getElementById("pip-value").innerHTML) || 0;
         const newPips = currentPips + d8;
         document.getElementById("pip-value").innerHTML = newPips;
-        document.getElementById("description-value").innerHTML = `+${d8} Pips (gewürfelt mit W6=1, W8=${d8})`;
+        document.getElementById("description-value").innerHTML = `+${d8} Kerne (gewürfelt mit W6=1, W8=${d8})`;
     } else {
         // Fall 2: W6 > 1 -> Beschreibung
         const groupIndex = d6 - 2;
