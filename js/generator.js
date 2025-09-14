@@ -36,6 +36,7 @@ function generateNewCharacter() {
     const dexterity = generateAttribute();
     const willpower = generateAttribute();
     const hitPoints = rollD6();
+    const pips = rollD6();
     const name = generateName();
 
     document.getElementById("name-input").value = name;
@@ -46,6 +47,7 @@ function generateNewCharacter() {
     document.getElementById("wil-value").innerHTML = willpower.value;
     document.getElementById("wil-rolls").innerHTML = willpower.rolls;
     document.getElementById("hp-value").innerHTML = hitPoints;
+    document.getElementById("pip-value").innerHTML = pips;
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
