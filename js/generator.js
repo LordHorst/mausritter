@@ -96,6 +96,72 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 6;5;Bibliothekar;Buchfetzen;Feder & Tinte
 6;6;Verarmter Edelnager;Filzhut;Parfüm`
 
+const birthsigns = {
+    1: "Stern (Tapfer / Tollkühn)",
+    2: "Rad (Fleißig / Fantasielos)",
+    3: "Eichel (Neugierig / Dickköpfig)",
+    4: "Sturm (Großzügig / Zornig)",
+    5: "Mond (Weise / Geheimnisvoll)",
+    6: "Mutter (Fürsorglich / Besorgt)"
+};
+
+const coatColors = {
+    1: "Schokolade",
+    2: "Schwarz",
+    3: "Weiß",
+    4: "Beige",
+    5: "Grau",
+    6: "Blau"
+};
+
+const coatPatterns = {
+    1: "Einfarbig",
+    2: "Gestreift",
+    3: "Fleckig",
+    4: "Geringelt",
+    5: "Marmoriert",
+    6: "Gesprenkelt"
+};
+
+const physicalDetails = {
+    11: "Vernarbter Körper",
+    12: "Beleibter Körper",
+    13: "Skelettartiger Körper",
+    14: "Ranker Körper",
+    15: "Winziger Körper",
+    16: "Massiver Körper",
+    21: "Kriegsbemalung",
+    22: "Fremdländische Kleidung",
+    23: "Elegante Kleidung",
+    24: "Geflickte Kleidung",
+    25: "Modische Kleidung",
+    26: "Ungewaschene Kleidung",
+    31: "Fehlendes Ohr",
+    32: "Klumpiges Gesicht",
+    33: "Schönes Gesicht",
+    34: "Rundes Gesicht",
+    35: "Zartes Gesicht",
+    36: "Längliches Gesicht",
+    41: "Gepflegtes Fell",
+    42: "Dreadlocks",
+    43: "Gefärbtes Fell",
+    44: "Rasiertes Fell",
+    45: "Krauses Fell",
+    46: "Seidiges Fell",
+    51: "Nachtschwarze Augen",
+    52: "Augenklappe",
+    53: "Blutrote Augen",
+    54: "Weise Augen",
+    55: "Scharfe Augen",
+    56: "Leuchtende Augen",
+    61: "Gekürzter Schwanz",
+    62: "Peitschenartiger Schwanz",
+    63: "Haarbüschel-Schwanz",
+    64: "Stummelschwanz",
+    65: "Greifschwanz",
+    66: "Gekräuselter Schwanz"
+};
+
 /*Würfel*/
 function rollD6() {
     return Math.floor(Math.random() * 6) + 1;
@@ -202,6 +268,28 @@ function generateName() {
     return names[Math.floor(Math.random() * names.length)];
 }
 
+function generateBirthsign() {
+    const roll = rollD6();
+    const sign = birthsigns[roll];
+    document.getElementById("birth-sign-value").innerHTML = sign;
+}
+
+function generateCoat() {
+    const colorRoll = rollD6();
+    const patternRoll = rollD6();
+    const color = coatColors[colorRoll];
+    const pattern = coatPatterns[patternRoll];
+    document.getElementById("fur-value").innerHTML = `${color}, ${pattern}`;
+}
+
+function generatePhysicalTrait() {
+    const roll1 = rollD6();
+    const roll2 = rollD6();
+    const d66 = parseInt(`${roll1}${roll2}`);
+    const trait = physicalDetails[d66] || "Unbekanntes Merkmal";
+    document.getElementById("physical-trait-value").innerHTML = trait;
+}
+
 function generateNewCharacter() {
     const strength = generateAttribute();
     const dexterity = generateAttribute();
@@ -233,8 +321,11 @@ function generateNewCharacter() {
         document.getElementById(`item-${i}`).innerHTML = "";
     }
 
-    // Jetzt noch den Tant generieren
+    // Jetzt noch den Tant und andere Attribute generieren
     generateTant();
+    generateBirthsign();
+    generateCoat();
+    generatePhysicalTrait();    
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
@@ -298,6 +389,9 @@ function saveCharacter() {
         willpowerRolls: document.getElementById("wil-rolls").innerHTML,
         hp: document.getElementById("hp-value").innerHTML,
         pips: document.getElementById("pip-value").innerHTML,
+        birthsign: document.getElementById("birth-sign-value").innerHTML,
+        fur: document.getElementById("fur-value").innerHTML,
+        physicalTrait: document.getElementById("physical-trait-value").innerHTML,
         description: document.getElementById("description-value").innerHTML, 
         backgroundName: document.getElementById("background-name").innerHTML,
         items: items,
@@ -340,6 +434,9 @@ function loadCharacter(index) {
         document.getElementById("hp-value").innerHTML = char.hp;
         document.getElementById("pip-value").innerHTML = char.pips;
         document.getElementById("description-value").innerHTML = char.description;
+        document.getElementById("birth-sign-value").innerHTML = char.birthsign || "";
+        document.getElementById("fur-value").innerHTML = char.fur || "";
+        document.getElementById("physical-trait-value").innerHTML = char.physicalTrait || "";
         document.getElementById("background-name").innerHTML = char.backgroundName;
         
         for (let i = 1; i <= 10; i++) {
@@ -380,6 +477,9 @@ function deleteCharacter() {
             document.getElementById("wil-rolls").innerHTML = "";
             document.getElementById("hp-value").innerHTML = "";
             document.getElementById("pip-value").innerHTML = "";
+            document.getElementById("birth-sign-value").innerHTML = "";
+            document.getElementById("fur-value").innerHTML = "";
+            document.getElementById("physical-trait-value").innerHTML = "";
             document.getElementById("background-name").innerHTML = "";
             document.getElementById("description-value").innerHTML = "";
             
