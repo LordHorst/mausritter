@@ -49,11 +49,72 @@ function generateNewCharacter() {
     document.getElementById("hp-value").innerHTML = hitPoints;
     document.getElementById("pip-value").innerHTML = pips;
 
+    //get background for charakter
+    const background = parseCSV(hbackgroundCSV);
+
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
         button.disabled = false;
     });
 }
+
+// Hintergrund-Daten aus der CSV-Datei als String.
+// Dies ist eine einfache Methode, ohne eine separate Datei laden zu müssen.
+const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
+1;1;Versuchstier;Zauber: Magisches Geschoss;Bleimantel (Schwere Rüstung)
+1;2;Küchenwühler;Schild & Wams (Leichte Rüstung);Kochgeschirr
+1;3;Käfigbewohner;Zauber: Sei verstanden;Flasche Milch
+1;4;Heckenhexe;Zauber: Heilung;Räucherstäbchen
+1;5;Lederarbeiter;Schild & Wams (Leichte Rüstung);Schere
+1;6;Straßenkämpfer;Dolch (Leicht, 1W6);Flasche Kaffee
+2;1;Wanderpriester;Zauber: Beruhigen;Heiliges Symbol
+2;2;Käferhüter;Gefährte: Treuer Käfer;Stange, 6 Zoll
+2;3;Bierbrauer;Gefährte: Betrunkener Fackelträger;Kleines Fass Bier
+2;4;Fischmaus;Netz;Nadel (Leicht, 1W6)
+2;5;Schmied;Hammer (Mittel, 1W6/1W8);Metallfeile
+2;6;Drahtarbeiter;Draht, Spule;Elektrische Laterne
+3;1;Holzfäller;Axt (Mittel, 1W6/1W8);Schnur, Rolle
+3;2;Fledermauskultist;Zauber: Dunkelheit;Beutel mit Fledermauszähnen
+3;3;Zinnbergbauer;Spitzhacke (Mittel, 1W6/1W8);Laterne
+3;4;Müllsammler;Müllhaken (Schwer, 1W10);Spiegel
+3;5;Mauerläufer;Angelhaken;Faden, Spule
+3;6;Händler;Gefährte: Packratte;20 Pips IOU von einem Edelnager
+4;1;Floßcrew;Hammer (Mittel, 1W6/1W8);Holzspieße
+4;2;Wurmfänger;Stange, 6 Zoll;Seife
+4;3;Spatzenreiter;Angelhaken;Schutzbrille
+4;4;Kanalführer;Metallfeile;Faden, Spule
+4;5;Gefängniswärter;Kette, 6 Zoll;Speer (Schwer, 1W10)
+4;6;Pilzfarmer;Getrockneter Pilz (als Rationen);Sporenmaske
+5;1;Dammbauer;Schaufel;Holzspieße
+5;2;Kartograf;Feder & Tinte;Kompass
+5;3;Fallendieb;Stück Käse;Kleber
+5;4;Vagabund;Zelt;Schatzkarte, zweifelhaft
+5;5;Getreidebauer;Speer (Schwer, 1W10);Pfeife
+5;6;Nachrichtenläufer;Schlafsack;Dokumente, versiegelt
+6;1;Spielmann;Musikinstrument;Verkleidungsset
+6;2;Spieler;Satz gezinkte Würfel;Spiegel
+6;3;Saftzapfer;Eimer;Holzspieße
+6;4;Imker;Honigglas;Netz
+6;5;Bibliothekar;Buchfetzen;Feder & Tinte
+6;6;Verarmter Edelnager;Filzhut;Parfüm`
+
+// Funktion zum Parsen des CSV-Strings in ein Array von Objekten
+function parseCSV(csvString) {
+  const lines = csvString.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim());
+  
+  const result = [];
+  for (let i = 1; i < lines.length; i++) {
+    const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v => v.replace(/"/g, ''));
+    const entry = {};
+    headers.forEach((header, index) => {
+      entry[header] = values[index];
+    });
+    result.push(entry);
+  }
+  return result;
+}
+
 
 // --- Speicher- und Lade-Logik mit localStorage ---
 
