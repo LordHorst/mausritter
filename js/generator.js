@@ -58,7 +58,7 @@ function generateNewCharacter() {
     document.getElementById("background-items").innerHTML = `Gegenstände: ${itemA}, ${itemB}`;
 
     //get background for charakter
-    const background = parseCSV(hbackgroundCSV);
+    const background = parseCSV(backgroundCSV);
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
