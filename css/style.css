@@ -1,7 +1,5 @@
-.font-pt-sans-narrow,
 body {
-    font-family: 'PT Sans Narrow', Arial, sans-serif !important;
-    font-weight: 700 !important;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     color: #333;
     display: flex;
@@ -10,6 +8,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
+    padding-bottom: 50px;
 }
 .character-sheet {
     background-color: #fff;
@@ -19,31 +18,59 @@ body {
     max-width: 500px;
     text-align: center;
     margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
 }
-h1 {
-    color: #4CAF50;
-    margin-bottom: 20px;
+.attribute-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
-.attribute, .name-field {
-    margin: 15px 0;
+.attribute {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
-.attribute-name, .name-label {
-    font-family: 'Germania One', cursive, sans-serif !important;
+.attribute-name {
     font-size: 1.2em;
     font-weight: bold;
+    font-family: 'Germania One', cursive;
 }
 .attribute-value {
     font-size: 1.8em;
     color: #d9534f;
+    font-family: 'PT Sans Narrow', sans-serif;
 }
 .attribute-rolls {
     font-size: 0.8em;
     color: #888;
 }
-.hp {
-    margin-top: 30px;
+.hp, .item-list {
     padding-top: 20px;
     border-top: 1px dashed #ccc;
+}
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+.item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: left;
+    position: relative;
+}
+.item-label {
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    font-size: 0.7em;
+    color: #aaa;
 }
 .actions {
     margin-top: 20px;
@@ -69,6 +96,9 @@ h1 {
     cursor: not-allowed;
     background-color: #ccc;
 }
+.name-field {
+    text-align: center;
+}
 #name-input {
     font-size: 1.5em;
     text-align: center;
@@ -77,4 +107,35 @@ h1 {
     padding: 5px;
     width: 80%;
     margin-top: 5px;
+}
+.character-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.character-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #d9534f;
+    margin-bottom: 5px;
+}
+.card-stats {
+    font-size: 0.9em;
+    color: #555;
 }
