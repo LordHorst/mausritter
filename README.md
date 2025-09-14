@@ -1,4 +1,4 @@
-# mausritter.github.io
+# mausritter
 Charaktergenerator für Mausritter
 
 # Anleitung
@@ -14,3 +14,6 @@ Löscht den derzeit ausgewählten Charakter
 
 ## Str <-> Dex; Str <-> Wil; Dex <-> Wil
 Tauscht die Werte wie angegeben. Kann pro Charakter nur einmal durchgeführt werden!
+
+# URL
+Aufrufbar unter https://lordhorst.github.io/mausritter/
