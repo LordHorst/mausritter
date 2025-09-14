@@ -25,7 +25,7 @@ body {
 .attribute-container-wrapper {
     display: flex;
     gap: 20px;
-    align-items: center;
+    align-items: stretch; /* Dies stellt sicher, dass die Höhe der Elemente angepasst wird */
     justify-content: center;
 }
 .description-field {
@@ -35,6 +35,9 @@ body {
     border-radius: 8px;
     background-color: #f9f9f9;
     flex: 1;
+    /* Die Höhe wird auf Basis der kombinierten Höhe der 3 Attribute berechnet: */
+    /* 3 * (20px Padding + 2px Border) + 2 * 15px Gap = 66px + 30px = 96px */
+    min-height: 96px;
 }
 .attribute-container {
     display: flex;
