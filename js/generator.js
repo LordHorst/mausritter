@@ -39,7 +39,8 @@ function generateNewCharacter() {
     const pips = rollD6();
     const name = generateName();
 
-     // Finde den passenden Hintergrund im Array
+    // Finde den passenden Hintergrund im Array
+    const backgrounds = parseCSV(backgroundCSV);     
     const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == pips);
     const backgroundText = background ? background["Beruf/Hintergrund"] : "Unbekannt";
     const itemA = background ? background["Gegenstand A"] : "Nichts";
@@ -57,8 +58,7 @@ function generateNewCharacter() {
     document.getElementById("background-name").innerHTML = backgroundText;
     document.getElementById("background-items").innerHTML = `Gegenstände: ${itemA}, ${itemB}`;
 
-    //get background for charakter
-    const background = parseCSV(backgroundCSV);
+
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
