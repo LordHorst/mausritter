@@ -56,7 +56,13 @@ function generateNewCharacter() {
     document.getElementById("hp-value").innerHTML = hitPoints;
     document.getElementById("pip-value").innerHTML = pips;
     document.getElementById("background-name").innerHTML = backgroundText;
-    document.getElementById("background-items").innerHTML = `Gegenstände: ${itemA}, ${itemB}`;
+    // Füllt die ersten beiden Inventarplätze mit den Gegenständen
+    document.getElementById("item-1").innerHTML = itemA;
+    document.getElementById("item-2").innerHTML = itemB;
+    // Leert die restlichen Inventarfelder
+    for (let i = 3; i <= 10; i++) {
+        document.getElementById(`item-${i}`).innerHTML = "";
+    }
 
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
@@ -157,9 +163,16 @@ function saveCharacter() {
         document.getElementById("dex-value").innerHTML.trim() === "" ||
         document.getElementById("wil-value").innerHTML.trim() === "" ||
         document.getElementById("hp-value").innerHTML.trim() === ""
+        document.getElementById("background-name").innerHTML.trim() === ""
     ) {
         alert("Fehler: Bitte generieren Sie zuerst einen vollständigen Charakter, bevor Sie ihn speichern.");
         return;
+    }
+
+    // Sammelt alle Inventargegenstände
+    const items = [];
+    for (let i = 1; i <= 10; i++) {
+        items.push(document.getElementById(`item-${i}`).innerHTML);
     }
 
     const newChar = {
@@ -171,6 +184,8 @@ function saveCharacter() {
         willpowerValue: document.getElementById("wil-value").innerHTML,
         willpowerRolls: document.getElementById("wil-rolls").innerHTML,
         hp: document.getElementById("hp-value").innerHTML,
+        backgroundName: document.getElementById("background-name").innerHTML,
+        items: items, // Speichert das Inventar-Array
         swapDone: document.getElementById("swap-str-dex").disabled
     };
     
@@ -208,7 +223,13 @@ function loadCharacter(index) {
         document.getElementById("wil-value").innerHTML = char.willpowerValue;
         document.getElementById("wil-rolls").innerHTML = char.willpowerRolls;
         document.getElementById("hp-value").innerHTML = char.hp;
-
+        document.getElementById("background-name").innerHTML = char.backgroundName;
+        
+        // Füllt die Inventarplätze mit den gespeicherten Gegenständen
+        for (let i = 1; i <= 10; i++) {
+            document.getElementById(`item-${i}`).innerHTML = char.items[i-1] || "";
+        }
+        
         const buttons = document.querySelectorAll('.swap-buttons button');
         buttons.forEach(button => {
             button.disabled = char.swapDone;
@@ -243,6 +264,12 @@ function deleteCharacter() {
             document.getElementById("wil-value").innerHTML = "";
             document.getElementById("wil-rolls").innerHTML = "";
             document.getElementById("hp-value").innerHTML = "";
+            document.getElementById("background-name").innerHTML = "";
+        
+            // Inventar leeren
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`item-${i}`).innerHTML = "";
+            }
             document.getElementById("delete-character").disabled = true;
 
             alert(`Charakter "${characterName}" wurde gelöscht.`);
