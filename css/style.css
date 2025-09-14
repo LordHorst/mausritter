@@ -47,6 +47,11 @@ body {
     font-size: 0.8em;
     color: #888;
 }
+.pip {
+    padding-top: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.8em;
+}
 .hp, .item-list {
     padding-top: 20px;
     border-top: 1px dashed #ccc;
