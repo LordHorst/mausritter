@@ -261,7 +261,7 @@ function renderSavedCharacters() {
             card.innerHTML = `
                 <div class="card-name">${char.name}</div>
                 <div class="card-stats">Str: ${char.strengthValue} | Dex: ${char.dexterityValue} | Wil: ${char.willpowerValue}</div>
-                <div class="card-stats">TP: ${char.hp} | Pips: ${char.pips}</div>
+                <div class="card-stats">TP: ${char.hp} | Kerne: ${char.pips}</div>
                 <div class="card-stats">Beschreibung: ${char.description}</div>
             `;
             container.appendChild(card);
