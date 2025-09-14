@@ -138,9 +138,13 @@ function swapAttributes(attr1, attr2) {
 
 // Wird beim Laden der Seite ausgeführt
 window.onload = function() {
+    const deleteButton = document.getElementById("delete-character");
+
     if (getCookie("mausritter_char")) {
         loadCharacter();
+        deleteButton.disabled = false;
     } else {
         generateNewCharacter();
+        deleteButton.disabled = true;
     }
 };
