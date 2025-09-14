@@ -162,7 +162,7 @@ function saveCharacter() {
         document.getElementById("str-value").innerHTML.trim() === "" ||
         document.getElementById("dex-value").innerHTML.trim() === "" ||
         document.getElementById("wil-value").innerHTML.trim() === "" ||
-        document.getElementById("hp-value").innerHTML.trim() === ""
+        document.getElementById("hp-value").innerHTML.trim() === "" ||
         document.getElementById("background-name").innerHTML.trim() === ""
     ) {
         alert("Fehler: Bitte generieren Sie zuerst einen vollständigen Charakter, bevor Sie ihn speichern.");
