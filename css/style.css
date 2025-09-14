@@ -47,14 +47,28 @@ body {
     font-size: 0.8em;
     color: #888;
 }
-.pip {
-    padding-top: 10px;
-    border: 1px solid #ccc;
-    font-size: 0.8em;
-}
-.hp, .item-list {
+.hp-cores, .item-list {
     padding-top: 20px;
     border-top: 1px dashed #ccc;
+}
+.hp-cores-values {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.hp-cores-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hp-cores-label {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.hp-cores-number {
+    font-size: 1.8em;
+    color: #d9534f;
+    font-family: 'PT Sans Narrow', sans-serif;
 }
 .item-list {
     display: grid;
