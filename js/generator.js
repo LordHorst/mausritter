@@ -305,11 +305,11 @@ function generateNewCharacter() {
 
     document.getElementById("name-input").value = name;
     document.getElementById("str-value").innerHTML = strength.value;
-    document.getElementById("str-rolls").innerHTML = strength.rolls;
+    document.getElementById("str-rolls").innerHTML = "Würfe: " + strength.rolls;
     document.getElementById("dex-value").innerHTML = dexterity.value;
-    document.getElementById("dex-rolls").innerHTML = dexterity.rolls;
+    document.getElementById("dex-rolls").innerHTML = "Würfe: " + dexterity.rolls;
     document.getElementById("wil-value").innerHTML = willpower.value;
-    document.getElementById("wil-rolls").innerHTML = willpower.rolls;
+    document.getElementById("wil-rolls").innerHTML = "Würfe: " + willpower.rolls;
     document.getElementById("hp-value").innerHTML = hitPoints;
     document.getElementById("pip-value").innerHTML = pips;
     document.getElementById("background-name").innerHTML = backgroundText;
