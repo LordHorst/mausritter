@@ -58,8 +58,6 @@ function generateNewCharacter() {
     document.getElementById("background-name").innerHTML = backgroundText;
     document.getElementById("background-items").innerHTML = `Gegenstände: ${itemA}, ${itemB}`;
 
-
-
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
         button.disabled = false;
@@ -109,7 +107,7 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 // Funktion zum Parsen des CSV-Strings in ein Array von Objekten
 function parseCSV(csvString) {
   const lines = csvString.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
+  const headers = lines[0].split(';').map(h => h.trim());
   
   const result = [];
   for (let i = 1; i < lines.length; i++) {
