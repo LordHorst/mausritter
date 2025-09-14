@@ -1,77 +1,4 @@
-// --- Charaktergenerierungs-Logik ---
-function rollD6() {
-    return Math.floor(Math.random() * 6) + 1;
-}
-
-function generateAttribute() {
-    const roll1 = rollD6();
-    const roll2 = rollD6();
-    const roll3 = rollD6();
-    
-    const rolls = [roll1, roll2, roll3].sort((a, b) => b - a);
-    
-    const attributeValue = rolls[0] + rolls[1];
-    const rollString = `(${roll1}, ${roll2}, ${roll3})`;
-    
-    return {
-        value: attributeValue,
-        rolls: rollString
-    };
-}
-
-function generateName() {
-    const names = [
-        "Fenchel", "Sandi", "Ringelchen", "Wermuth", "Salbei", "Klee", "Minze", 
-        "Hagebutte", "Pilz", "Eichel", "Kiesel", "Krümel", "Flausche", "Glöckchen",
-        "Pip", "Fitzel", "Pünktchen", "Rudi", "Flick", "Acker", "Butz", "Dorn", 
-        "Fell", "Honig", "Käse", "Löwenzahn", "Nüsschen", "Pfeffer", "Rinde", "Spitz",
-        "Waldo", "Zwiebel", "Knopf", "Samt", "Piep", "Socke", "Katz", "Mücke"
-    ];
-    
-    return names[Math.floor(Math.random() * names.length)];
-}
-
-function generateNewCharacter() {
-    const strength = generateAttribute();
-    const dexterity = generateAttribute();
-    const willpower = generateAttribute();
-    const hitPoints = rollD6();
-    const pips = rollD6();
-    const name = generateName();
-
-    // Finde den passenden Hintergrund im Array
-    const backgrounds = parseCSV(backgroundCSV);     
-    const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == pips);
-    const backgroundText = background ? background["Beruf/Hintergrund"] : "Unbekannt";
-    const itemA = background ? background["Gegenstand A"] : "Nichts";
-    const itemB = background ? background["Gegenstand B"] : "Nichts";
-
-    document.getElementById("name-input").value = name;
-    document.getElementById("str-value").innerHTML = strength.value;
-    document.getElementById("str-rolls").innerHTML = strength.rolls;
-    document.getElementById("dex-value").innerHTML = dexterity.value;
-    document.getElementById("dex-rolls").innerHTML = dexterity.rolls;
-    document.getElementById("wil-value").innerHTML = willpower.value;
-    document.getElementById("wil-rolls").innerHTML = willpower.rolls;
-    document.getElementById("hp-value").innerHTML = hitPoints;
-    document.getElementById("pip-value").innerHTML = pips;
-    document.getElementById("background-name").innerHTML = backgroundText;
-    // Füllt die ersten beiden Inventarplätze mit den Gegenständen
-    document.getElementById("item-1").innerHTML = itemA;
-    document.getElementById("item-2").innerHTML = itemB;
-    // Leert die restlichen Inventarfelder
-    for (let i = 3; i <= 10; i++) {
-        document.getElementById(`item-${i}`).innerHTML = "";
-    }
-
-    const buttons = document.querySelectorAll('.swap-buttons button');
-    buttons.forEach(button => {
-        button.disabled = false;
-    });
-}
-
 // Hintergrund-Daten aus der CSV-Datei als String.
-// Dies ist eine einfache Methode, ohne eine separate Datei laden zu müssen.
 const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 1;1;Versuchstier;Zauber: Magisches Geschoss;Bleimantel (Schwere Rüstung)
 1;2;Küchenwühler;Schild & Wams (Leichte Rüstung);Kochgeschirr
@@ -80,9 +7,9 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 1;5;Lederarbeiter;Schild & Wams (Leichte Rüstung);Schere
 1;6;Straßenkämpfer;Dolch (Leicht, 1W6);Flasche Kaffee
 2;1;Wanderpriester;Zauber: Beruhigen;Heiliges Symbol
-2;2;Käferhüter;Gefährte: Treuer Käfer;Stange, 6 Zoll
+2;2;Käferhüter;Gefährte: Treuer Käfer;"Stange, 6 Zoll"
 2;3;Bierbrauer;Gefährte: Betrunkener Fackelträger;Kleines Fass Bier
-2;4;Fischmaus;Netz;Nadel (Leicht, 1W6)
+2;4;Fischmaus;Netz;"Nadel (Leicht, 1W6)"
 2;5;Schmied;Hammer (Mittel, 1W6/1W8);Metallfeile
 2;6;Drahtarbeiter;Draht, Spule;Elektrische Laterne
 3;1;Holzfäller;Axt (Mittel, 1W6/1W8);Schnur, Rolle
@@ -100,7 +27,7 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 5;1;Dammbauer;Schaufel;Holzspieße
 5;2;Kartograf;Feder & Tinte;Kompass
 5;3;Fallendieb;Stück Käse;Kleber
-5;4;Vagabund;Zelt;Schatzkarte, zweifelhaft
+5;4;Vagabund;Zelt;"Schatzkarte, zweifelhaft"
 5;5;Getreidebauer;Speer (Schwer, 1W10);Pfeife
 5;6;Nachrichtenläufer;Schlafsack;Dokumente, versiegelt
 6;1;Spielmann;Musikinstrument;Verkleidungsset
@@ -146,8 +73,76 @@ function parseCSV(csvString) {
   return result;
 }
 
+const backgrounds = parseCSV(backgroundCSV);
 
-// --- Speicher- und Lade-Logik mit localStorage ---
+function rollD6() {
+    return Math.floor(Math.random() * 6) + 1;
+}
+
+function generateAttribute() {
+    const roll1 = rollD6();
+    const roll2 = rollD6();
+    const roll3 = rollD6();
+    
+    const rolls = [roll1, roll2, roll3].sort((a, b) => b - a);
+    
+    const attributeValue = rolls[0] + rolls[1];
+    const rollString = `(${roll1}, ${roll2}, ${roll3})`;
+    
+    return {
+        value: attributeValue,
+        rolls: rollString
+    };
+}
+
+function generateName() {
+    const names = [
+        "Fenchel", "Sandi", "Ringelchen", "Wermuth", "Salbei", "Klee", "Minze", 
+        "Hagebutte", "Pilz", "Eichel", "Kiesel", "Krümel", "Flausche", "Glöckchen",
+        "Pip", "Fitzel", "Pünktchen", "Rudi", "Flick", "Acker", "Butz", "Dorn", 
+        "Fell", "Honig", "Käse", "Löwenzahn", "Nüsschen", "Pfeffer", "Rinde", "Spitz",
+        "Waldo", "Zwiebel", "Knopf", "Samt", "Piep", "Socke", "Katz", "Mücke"
+    ];
+    
+    return names[Math.floor(Math.random() * names.length)];
+}
+
+function generateNewCharacter() {
+    const strength = generateAttribute();
+    const dexterity = generateAttribute();
+    const willpower = generateAttribute();
+    const hitPoints = rollD6();
+    const cores = rollD6();
+    const name = generateName();
+
+    const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == cores);
+    const backgroundText = background ? background["Beruf/Hintergrund"] : "Unbekannt";
+    const itemA = background ? background["Gegenstand A"] : "Nichts";
+    const itemB = background ? background["Gegenstand B"] : "Nichts";
+
+    document.getElementById("name-input").value = name;
+    document.getElementById("str-value").innerHTML = strength.value;
+    document.getElementById("str-rolls").innerHTML = strength.rolls;
+    document.getElementById("dex-value").innerHTML = dexterity.value;
+    document.getElementById("dex-rolls").innerHTML = dexterity.rolls;
+    document.getElementById("wil-value").innerHTML = willpower.value;
+    document.getElementById("wil-rolls").innerHTML = willpower.rolls;
+    document.getElementById("hp-value").innerHTML = hitPoints;
+    document.getElementById("pip-value").innerHTML = cores;
+    document.getElementById("background-name").innerHTML = backgroundText;
+
+    document.getElementById("item-1").innerHTML = itemA;
+    document.getElementById("item-2").innerHTML = itemB;
+    
+    for (let i = 3; i <= 10; i++) {
+        document.getElementById(`item-${i}`).innerHTML = "";
+    }
+
+    const buttons = document.querySelectorAll('.swap-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
+}
 
 function getSavedCharacters() {
     const characters = localStorage.getItem('mausritter_chars');
@@ -168,7 +163,7 @@ function renderSavedCharacters() {
             card.innerHTML = `
                 <div class="card-name">${char.name}</div>
                 <div class="card-stats">Str: ${char.strengthValue} | Dex: ${char.dexterityValue} | Wil: ${char.willpowerValue}</div>
-                <div class="card-stats">TP: ${char.hp}</div>
+                <div class="card-stats">TP: ${char.hp} | Pips: ${char.pips}</div>
             `;
             container.appendChild(card);
         });
@@ -182,13 +177,13 @@ function saveCharacter() {
         document.getElementById("dex-value").innerHTML.trim() === "" ||
         document.getElementById("wil-value").innerHTML.trim() === "" ||
         document.getElementById("hp-value").innerHTML.trim() === "" ||
+        document.getElementById("pip-value").innerHTML.trim() === "" ||
         document.getElementById("background-name").innerHTML.trim() === ""
     ) {
         alert("Fehler: Bitte generieren Sie zuerst einen vollständigen Charakter, bevor Sie ihn speichern.");
         return;
     }
 
-    // Sammelt alle Inventargegenstände
     const items = [];
     for (let i = 1; i <= 10; i++) {
         items.push(document.getElementById(`item-${i}`).innerHTML);
@@ -203,8 +198,9 @@ function saveCharacter() {
         willpowerValue: document.getElementById("wil-value").innerHTML,
         willpowerRolls: document.getElementById("wil-rolls").innerHTML,
         hp: document.getElementById("hp-value").innerHTML,
+        pips: document.getElementById("pip-value").innerHTML,
         backgroundName: document.getElementById("background-name").innerHTML,
-        items: items, // Speichert das Inventar-Array
+        items: items,
         swapDone: document.getElementById("swap-str-dex").disabled
     };
     
@@ -242,13 +238,13 @@ function loadCharacter(index) {
         document.getElementById("wil-value").innerHTML = char.willpowerValue;
         document.getElementById("wil-rolls").innerHTML = char.willpowerRolls;
         document.getElementById("hp-value").innerHTML = char.hp;
+        document.getElementById("pip-value").innerHTML = char.pips;
         document.getElementById("background-name").innerHTML = char.backgroundName;
         
-        // Füllt die Inventarplätze mit den gespeicherten Gegenständen
         for (let i = 1; i <= 10; i++) {
             document.getElementById(`item-${i}`).innerHTML = char.items[i-1] || "";
         }
-        
+
         const buttons = document.querySelectorAll('.swap-buttons button');
         buttons.forEach(button => {
             button.disabled = char.swapDone;
@@ -274,7 +270,6 @@ function deleteCharacter() {
             characters.splice(indexToDelete, 1);
             localStorage.setItem('mausritter_chars', JSON.stringify(characters));
 
-            // Felder leeren und Buttons zurücksetzen
             document.getElementById("name-input").value = "";
             document.getElementById("str-value").innerHTML = "";
             document.getElementById("str-rolls").innerHTML = "";
@@ -283,17 +278,18 @@ function deleteCharacter() {
             document.getElementById("wil-value").innerHTML = "";
             document.getElementById("wil-rolls").innerHTML = "";
             document.getElementById("hp-value").innerHTML = "";
+            document.getElementById("pip-value").innerHTML = "";
             document.getElementById("background-name").innerHTML = "";
-        
-            // Inventar leeren
+            
             for (let i = 1; i <= 10; i++) {
                 document.getElementById(`item-${i}`).innerHTML = "";
             }
+
             document.getElementById("delete-character").disabled = true;
 
             alert(`Charakter "${characterName}" wurde gelöscht.`);
-            renderSavedCharacters(); // Kacheln neu rendern
-            generateNewCharacter(); // Neuen Charakter generieren
+            renderSavedCharacters();
+            generateNewCharacter();
         } else {
             alert(`Charakter "${characterName}" wurde nicht in der Speicherung gefunden.`);
         }
@@ -333,7 +329,6 @@ window.onload = function() {
         generateNewCharacter();
     }
     
-    // Initialen Zustand des Löschen-Buttons setzen
     deleteButton.disabled = savedCharacters.length === 0;
 
     renderSavedCharacters();
