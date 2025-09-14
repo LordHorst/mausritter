@@ -22,10 +22,44 @@ body {
     grid-template-columns: 1fr;
     grid-gap: 20px;
 }
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+}
+.name-background-div {
+    flex: 3;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.personal-traits {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.trait-field {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    flex: 1;
+}
+.trait-name {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.trait-value {
+    font-size: 1.1em;
+    color: #d9534f;
+}
 .attribute-container-wrapper {
     display: flex;
     gap: 20px;
-    align-items: stretch; /* Dies stellt sicher, dass die Höhe der Elemente angepasst wird */
+    align-items: stretch;
     justify-content: center;
 }
 .description-field {
@@ -34,10 +68,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
-    font-size: 0.6em;
     flex: 1;
-    /* Die Höhe wird auf Basis der kombinierten Höhe der 3 Attribute berechnet: */
-    /* 3 * (20px Padding + 2px Border) + 2 * 15px Gap = 66px + 30px = 96px */
     min-height: 96px;
 }
 .attribute-container {
@@ -51,7 +82,6 @@ body {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ddd;
-    font-size:  0.8em;
 }
 .attribute-name {
     font-size: 1.2em;
@@ -135,8 +165,13 @@ body {
     cursor: not-allowed;
     background-color: #ccc;
 }
-.name-field {
+.name-input-container {
     text-align: center;
+    padding-bottom: 10px;
+}
+.name-label {
+    font-size: 1.2em;
+    font-weight: bold;
 }
 #name-input {
     font-size: 1.5em;
@@ -145,7 +180,19 @@ body {
     border-radius: 5px;
     padding: 5px;
     width: 80%;
-    margin-top: 5px;
+}
+.background-div {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+}
+.background-label {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.background-value {
+    font-size: 1.2em;
+    color: #d9534f;
 }
 .character-cards-container {
     display: flex;
