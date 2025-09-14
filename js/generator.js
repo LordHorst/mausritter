@@ -107,18 +107,16 @@ function saveCharacter() {
     
     let characters = getSavedCharacters();
 
-    // Prüft, ob ein Charakter mit demselben Namen bereits existiert
     const existingIndex = characters.findIndex(char => char.name === newChar.name);
     if (existingIndex !== -1) {
         characters[existingIndex] = newChar;
         alert(`Charakter "${newChar.name}" wurde aktualisiert.`);
     } else {
-        // Limit von 10 Charakteren prüfen
         if (characters.length >= 10) {
             if (confirm("Das Speicherlimit von 10 Charakteren ist erreicht. Der älteste Charakter wird überschrieben. Fortfahren?")) {
-                characters.shift(); // Ältesten (ersten) Charakter löschen
+                characters.shift();
             } else {
-                return; // Abbruch
+                return;
             }
         }
         characters.push(newChar);
@@ -147,28 +145,43 @@ function loadCharacter(index) {
             button.disabled = char.swapDone;
         });
 
-        // Löschen-Button aktivieren, da jetzt ein Charakter geladen ist
         document.getElementById("delete-character").disabled = false;
     }
 }
 
 function deleteCharacter() {
-    if (confirm("Soll der gespeicherte Charakter wirklich gelöscht werden?")) {
-        localStorage.removeItem("mausritter_chars");
+    const characterName = document.getElementById("name-input").value;
 
-        document.getElementById("name-input").value = "";
-        document.getElementById("str-value").innerHTML = "";
-        document.getElementById("str-rolls").innerHTML = "";
-        document.getElementById("dex-value").innerHTML = "";
-        document.getElementById("dex-rolls").innerHTML = "";
-        document.getElementById("wil-value").innerHTML = "";
-        document.getElementById("wil-rolls").innerHTML = "";
-        document.getElementById("hp-value").innerHTML = "";
+    if (characterName.trim() === "") {
+        alert("Es ist kein Charakter zum Löschen ausgewählt.");
+        return;
+    }
 
-        document.getElementById("delete-character").disabled = true;
+    if (confirm(`Soll der Charakter "${characterName}" wirklich gelöscht werden?`)) {
+        let characters = getSavedCharacters();
+        const indexToDelete = characters.findIndex(char => char.name === characterName);
 
-        renderSavedCharacters();
-        alert("Alle gespeicherten Charaktere wurden gelöscht.");
+        if (indexToDelete !== -1) {
+            characters.splice(indexToDelete, 1);
+            localStorage.setItem('mausritter_chars', JSON.stringify(characters));
+
+            // Felder leeren und Buttons zurücksetzen
+            document.getElementById("name-input").value = "";
+            document.getElementById("str-value").innerHTML = "";
+            document.getElementById("str-rolls").innerHTML = "";
+            document.getElementById("dex-value").innerHTML = "";
+            document.getElementById("dex-rolls").innerHTML = "";
+            document.getElementById("wil-value").innerHTML = "";
+            document.getElementById("wil-rolls").innerHTML = "";
+            document.getElementById("hp-value").innerHTML = "";
+            document.getElementById("delete-character").disabled = true;
+
+            alert(`Charakter "${characterName}" wurde gelöscht.`);
+            renderSavedCharacters(); // Kacheln neu rendern
+            generateNewCharacter(); // Neuen Charakter generieren
+        } else {
+            alert(`Charakter "${characterName}" wurde nicht in der Speicherung gefunden.`);
+        }
     }
 }
 
@@ -200,15 +213,13 @@ window.onload = function() {
     const savedCharacters = getSavedCharacters();
 
     if (savedCharacters.length > 0) {
-        // Den ersten Charakter laden, wenn welche gespeichert sind
         loadCharacter(0);
-        deleteButton.disabled = false;
     } else {
-        // Neuen Charakter generieren, wenn kein gespeicherter vorhanden ist
         generateNewCharacter();
-        deleteButton.disabled = true;
     }
+    
+    // Initialen Zustand des Löschen-Buttons setzen
+    deleteButton.disabled = savedCharacters.length === 0;
 
-    // Zeigt die Kacheln beim Laden der Seite an
     renderSavedCharacters();
 };
