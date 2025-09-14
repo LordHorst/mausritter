@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mausritter Charakter-Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .character-sheet {
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .attribute, .name-field {
+            margin: 15px 0;
+        }
+        .attribute-name, .name-label {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .attribute-value {
+            font-size: 1.8em;
+            color: #d9534f;
+        }
+        .attribute-rolls {
+            font-size: 0.8em;
+            color: #888;
+        }
+        .hp {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .actions button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .actions button:hover:not([disabled]) {
+            background-color: #4cae4c;
+        }
+        .actions button[disabled] {
+            cursor: not-allowed;
+            background-color: #ccc;
+        }
+        #name-input {
+            font-size: 1.5em;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            width: 80%;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="character-sheet">
+    <h1>Mausritter Charakter-Generator</h1>
+    
+    <div class="name-field">
+        <label for="name-input" class="name-label">Name</label>
+        <input type="text" id="name-input" value="">
+    </div>
+
+    <div class="attribute">
+        <div class="attribute-name">Stärke (Str)</div>
+        <div class="attribute-value" id="str-value"></div>
+        <div class="attribute-rolls" id="str-rolls"></div>
+    </div>
+
+    <div class="attribute">
+        <div class="attribute-name">Geschicklichkeit (Dex)</div>
+        <div class="attribute-value" id="dex-value"></div>
+        <div class="attribute-rolls" id="dex-rolls"></div>
+    </div>
+
+    <div class="attribute">
+        <div class="attribute-name">Willenskraft (Wil)</div>
+        <div class="attribute-value" id="wil-value"></div>
+        <div class="attribute-rolls" id="wil-rolls"></div>
+    </div>
+
+    <div class="hp">
+        <div class="attribute-name">Trefferpunkte</div>
+        <div class="attribute-value" id="hp-value"></div>
+    </div>
+
+    <div class="actions">
+        <button onclick="generateNewCharacter()">Neuen Charakter generieren</button>
+        <button onclick="saveCharacter()">Charakter speichern</button>
+        <button onclick="loadCharacter()">Charakter laden</button>
+    </div>
+
+    <div class="actions swap-buttons">
+        <button id="swap-str-dex" onclick="swapAttributes('str', 'dex')">Str &lt;-> Dex</button>
+        <button id="swap-str-wil" onclick="swapAttributes('str', 'wil')">Str &lt;-> Wil</button>
+        <button id="swap-dex-wil" onclick="swapAttributes('dex', 'wil')">Dex &lt;-> Wil</button>
+    </div>
+
+</div>
+
+<script>
+// --- Charaktergenerierungs-Logik ---
+function rollD6() {
+    return Math.floor(Math.random() * 6) + 1;
+}
+
+function generateAttribute() {
+    const roll1 = rollD6();
+    const roll2 = rollD6();
+    const roll3 = rollD6();
+    
+    const rolls = [roll1, roll2, roll3].sort((a, b) => b - a);
+    
+    const attributeValue = rolls[0] + rolls[1];
+    const rollString = `(${roll1}, ${roll2}, ${roll3})`;
+    
+    return {
+        value: attributeValue,
+        rolls: rollString
+    };
+}
+
+function generateName() {
+    const names = [
+        "Fenchel", "Sandi", "Ringelchen", "Wermuth", "Salbei", "Klee", "Minze", 
+        "Hagebutte", "Pilz", "Eichel", "Kiesel", "Krümel", "Flausche", "Glöckchen",
+        "Pip", "Fitzel", "Pünktchen", "Rudi", "Flick", "Acker", "Butz", "Dorn", 
+        "Fell", "Honig", "Käse", "Löwenzahn", "Nüsschen", "Pfeffer", "Rinde", "Spitz",
+        "Waldo", "Zwiebel", "Knopf", "Samt", "Piep", "Socke", "Katz", "Mücke"
+    ];
+    
+    return names[Math.floor(Math.random() * names.length)];
+}
+
+function generateNewCharacter() {
+    const strength = generateAttribute();
+    const dexterity = generateAttribute();
+    const willpower = generateAttribute();
+    const hitPoints = rollD6();
+    const name = generateName();
+
+    document.getElementById("name-input").value = name;
+    document.getElementById("str-value").innerHTML = strength.value;
+    document.getElementById("str-rolls").innerHTML = strength.rolls;
+    document.getElementById("dex-value").innerHTML = dexterity.value;
+    document.getElementById("dex-rolls").innerHTML = dexterity.rolls;
+    document.getElementById("wil-value").innerHTML = willpower.value;
+    document.getElementById("wil-rolls").innerHTML = willpower.rolls;
+    document.getElementById("hp-value").innerHTML = hitPoints;
+
+    // Reset der Tausch-Buttons
+    const buttons = document.querySelectorAll('.swap-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
+}
+
+// --- Cookie-Logik ---
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function saveCharacter() {
+    const characterData = {
+        name: document.getElementById("name-input").value,
+        strengthValue: document.getElementById("str-value").innerHTML,
+        strengthRolls: document.getElementById("str-rolls").innerHTML,
+        dexterityValue: document.getElementById("dex-value").innerHTML,
+        dexterityRolls: document.getElementById("dex-rolls").innerHTML,
+        willpowerValue: document.getElementById("wil-value").innerHTML,
+        willpowerRolls: document.getElementById("wil-rolls").innerHTML,
+        hp: document.getElementById("hp-value").innerHTML,
+        swapDone: document.getElementById("swap-str-dex").disabled
+    };
+    
+    const jsonString = JSON.stringify(characterData);
+    const date = new Date();
+    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `mausritter_char=${encodeURIComponent(jsonString)}; ${expires}; path=/`;
+
+    alert("Charakter erfolgreich gespeichert!");
+}
+
+function loadCharacter() {
+    const cookie = getCookie("mausritter_char");
+    if (cookie) {
+        const characterData = JSON.parse(decodeURIComponent(cookie));
+        
+        document.getElementById("name-input").value = characterData.name;
+        document.getElementById("str-value").innerHTML = characterData.strengthValue;
+        document.getElementById("str-rolls").innerHTML = characterData.strengthRolls;
+        document.getElementById("dex-value").innerHTML = characterData.dexterityValue;
+        document.getElementById("dex-rolls").innerHTML = characterData.dexterityRolls;
+        document.getElementById("wil-value").innerHTML = characterData.willpowerValue;
+        document.getElementById("wil-rolls").innerHTML = characterData.willpowerRolls;
+        document.getElementById("hp-value").innerHTML = characterData.hp;
+
+        const buttons = document.querySelectorAll('.swap-buttons button');
+        buttons.forEach(button => {
+            button.disabled = characterData.swapDone;
+        });
+
+        alert("Gespeicherter Charakter geladen!");
+    } else {
+        alert("Kein gespeicherter Charakter gefunden.");
+    }
+}
+
+function swapAttributes(attr1, attr2) {
+    if (confirm("Sollen die Werte von " + attr1.toUpperCase() + " und " + attr2.toUpperCase() + " wirklich getauscht werden?")) {
+        const value1 = document.getElementById(attr1 + "-value");
+        const rolls1 = document.getElementById(attr1 + "-rolls");
+        const value2 = document.getElementById(attr2 + "-value");
+        const rolls2 = document.getElementById(attr2 + "-rolls");
+
+        let tempValue = value1.innerHTML;
+        let tempRolls = rolls1.innerHTML;
+
+        value1.innerHTML = value2.innerHTML;
+        rolls1.innerHTML = rolls2.innerHTML;
+        
+        value2.innerHTML = tempValue;
+        rolls2.innerHTML = tempRolls;
+
+        const buttons = document.querySelectorAll('.swap-buttons button');
+        buttons.forEach(button => {
+            button.disabled = true;
+        });
+    }
+}
+
+// Wird beim Laden der Seite ausgeführt
+window.onload = function() {
+    if (getCookie("mausritter_char")) {
+        loadCharacter();
+    } else {
+        generateNewCharacter();
+    }
+};
+</script>
+
+</body>
+</html>
