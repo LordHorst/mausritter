@@ -39,7 +39,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0px;
 }
 .trait-field {
     padding: 5px;
@@ -49,7 +49,7 @@ body {
     flex: 1;
 }
 .trait-name {
-    font-size: 0.9em;
+    font-size: 0.5em;
     font-weight: bold;
 }
 .trait-value {
@@ -68,6 +68,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
+    font-size: 0-5em;
     flex: 1;
     min-height: 96px;
 }
