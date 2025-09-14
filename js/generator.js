@@ -47,22 +47,41 @@ function generateNewCharacter() {
     document.getElementById("wil-rolls").innerHTML = willpower.rolls;
     document.getElementById("hp-value").innerHTML = hitPoints;
 
-    // Reset der Tausch-Buttons
     const buttons = document.querySelectorAll('.swap-buttons button');
     buttons.forEach(button => {
         button.disabled = false;
     });
 }
 
-// --- Cookie-Logik ---
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+// --- Speicher- und Lade-Logik mit localStorage ---
+
+function getSavedCharacters() {
+    const characters = localStorage.getItem('mausritter_chars');
+    return characters ? JSON.parse(characters) : [];
+}
+
+function renderSavedCharacters() {
+    const container = document.getElementById('character-cards-container');
+    const characters = getSavedCharacters();
+    container.innerHTML = '';
+
+    if (characters.length > 0) {
+        characters.forEach((char, index) => {
+            const card = document.createElement('div');
+            card.className = 'character-card';
+            card.onclick = () => loadCharacter(index);
+
+            card.innerHTML = `
+                <div class="card-name">${char.name}</div>
+                <div class="card-stats">Str: ${char.strengthValue} | Dex: ${char.dexterityValue} | Wil: ${char.willpowerValue}</div>
+                <div class="card-stats">TP: ${char.hp}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
 }
 
 function saveCharacter() {
-    // Validierungsprüfung: Überprüft, ob alle Felder gefüllt sind
     if (
         document.getElementById("name-input").value.trim() === "" ||
         document.getElementById("str-value").innerHTML.trim() === "" ||
@@ -71,10 +90,10 @@ function saveCharacter() {
         document.getElementById("hp-value").innerHTML.trim() === ""
     ) {
         alert("Fehler: Bitte generieren Sie zuerst einen vollständigen Charakter, bevor Sie ihn speichern.");
-        return; // Bricht die Funktion ab, wenn ein Feld leer ist
+        return;
     }
 
-    const characterData = {
+    const newChar = {
         name: document.getElementById("name-input").value,
         strengthValue: document.getElementById("str-value").innerHTML,
         strengthRolls: document.getElementById("str-rolls").innerHTML,
@@ -86,47 +105,57 @@ function saveCharacter() {
         swapDone: document.getElementById("swap-str-dex").disabled
     };
     
-    const jsonString = JSON.stringify(characterData);
-    const date = new Date();
-    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = `mausritter_char=${encodeURIComponent(jsonString)}; ${expires}; path=/`;
+    let characters = getSavedCharacters();
 
-    alert("Charakter erfolgreich gespeichert!");
+    // Prüft, ob ein Charakter mit demselben Namen bereits existiert
+    const existingIndex = characters.findIndex(char => char.name === newChar.name);
+    if (existingIndex !== -1) {
+        characters[existingIndex] = newChar;
+        alert(`Charakter "${newChar.name}" wurde aktualisiert.`);
+    } else {
+        // Limit von 10 Charakteren prüfen
+        if (characters.length >= 10) {
+            if (confirm("Das Speicherlimit von 10 Charakteren ist erreicht. Der älteste Charakter wird überschrieben. Fortfahren?")) {
+                characters.shift(); // Ältesten (ersten) Charakter löschen
+            } else {
+                return; // Abbruch
+            }
+        }
+        characters.push(newChar);
+        alert(`Charakter "${newChar.name}" erfolgreich gespeichert!`);
+    }
+
+    localStorage.setItem('mausritter_chars', JSON.stringify(characters));
+    renderSavedCharacters();
 }
 
-function loadCharacter() {
-    const cookie = getCookie("mausritter_char");
-    if (cookie) {
-        const characterData = JSON.parse(decodeURIComponent(cookie));
-        
-        document.getElementById("name-input").value = characterData.name;
-        document.getElementById("str-value").innerHTML = characterData.strengthValue;
-        document.getElementById("str-rolls").innerHTML = characterData.strengthRolls;
-        document.getElementById("dex-value").innerHTML = characterData.dexterityValue;
-        document.getElementById("dex-rolls").innerHTML = characterData.dexterityRolls;
-        document.getElementById("wil-value").innerHTML = characterData.willpowerValue;
-        document.getElementById("wil-rolls").innerHTML = characterData.willpowerRolls;
-        document.getElementById("hp-value").innerHTML = characterData.hp;
+function loadCharacter(index) {
+    const characters = getSavedCharacters();
+    if (characters[index]) {
+        const char = characters[index];
+        document.getElementById("name-input").value = char.name;
+        document.getElementById("str-value").innerHTML = char.strengthValue;
+        document.getElementById("str-rolls").innerHTML = char.strengthRolls;
+        document.getElementById("dex-value").innerHTML = char.dexterityValue;
+        document.getElementById("dex-rolls").innerHTML = char.dexterityRolls;
+        document.getElementById("wil-value").innerHTML = char.willpowerValue;
+        document.getElementById("wil-rolls").innerHTML = char.willpowerRolls;
+        document.getElementById("hp-value").innerHTML = char.hp;
 
         const buttons = document.querySelectorAll('.swap-buttons button');
         buttons.forEach(button => {
-            button.disabled = characterData.swapDone;
+            button.disabled = char.swapDone;
         });
 
-        alert("Gespeicherter Charakter geladen!");
-    } else {
-        alert("Kein gespeicherter Charakter gefunden.");
+        // Löschen-Button aktivieren, da jetzt ein Charakter geladen ist
+        document.getElementById("delete-character").disabled = false;
     }
 }
 
 function deleteCharacter() {
-    // Sicherheitsabfrage mit Bestätigung
     if (confirm("Soll der gespeicherte Charakter wirklich gelöscht werden?")) {
-        // Löscht das Cookie, indem das Ablaufdatum in die Vergangenheit gesetzt wird
-        document.cookie = "mausritter_char=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        
-        // Leert die Charakterfelder
+        localStorage.removeItem("mausritter_chars");
+
         document.getElementById("name-input").value = "";
         document.getElementById("str-value").innerHTML = "";
         document.getElementById("str-rolls").innerHTML = "";
@@ -136,10 +165,10 @@ function deleteCharacter() {
         document.getElementById("wil-rolls").innerHTML = "";
         document.getElementById("hp-value").innerHTML = "";
 
-        // Graut den Löschen-Button aus
         document.getElementById("delete-character").disabled = true;
 
-        alert("Gespeicherter Charakter wurde gelöscht.");
+        renderSavedCharacters();
+        alert("Alle gespeicherten Charaktere wurden gelöscht.");
     }
 }
 
@@ -166,15 +195,20 @@ function swapAttributes(attr1, attr2) {
     }
 }
 
-// Wird beim Laden der Seite ausgeführt
 window.onload = function() {
     const deleteButton = document.getElementById("delete-character");
+    const savedCharacters = getSavedCharacters();
 
-    if (getCookie("mausritter_char")) {
-        loadCharacter();
+    if (savedCharacters.length > 0) {
+        // Den ersten Charakter laden, wenn welche gespeichert sind
+        loadCharacter(0);
         deleteButton.disabled = false;
     } else {
+        // Neuen Charakter generieren, wenn kein gespeicherter vorhanden ist
         generateNewCharacter();
         deleteButton.disabled = true;
     }
+
+    // Zeigt die Kacheln beim Laden der Seite an
+    renderSavedCharacters();
 };
