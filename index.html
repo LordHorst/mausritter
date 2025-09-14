@@ -17,36 +17,48 @@
         <label for="name-input" class="name-label">Name</label>
         <input type="text" id="name-input" value="">
     </div>
+    
+    <div class="attribute-container">
+        <div class="attribute">
+            <div class="attribute-name">Stärke (Str)</div>
+            <div class="attribute-value" id="str-value"></div>
+            <div class="attribute-rolls" id="str-rolls"></div>
+        </div>
 
-    <div class="attribute">
-        <div class="attribute-name">Stärke (Str)</div>
-        <div class="attribute-value" id="str-value"></div>
-        <div class="attribute-rolls" id="str-rolls"></div>
-    </div>
+        <div class="attribute">
+            <div class="attribute-name">Geschicklichkeit (Dex)</div>
+            <div class="attribute-value" id="dex-value"></div>
+            <div class="attribute-rolls" id="dex-rolls"></div>
+        </div>
 
-    <div class="attribute">
-        <div class="attribute-name">Geschicklichkeit (Dex)</div>
-        <div class="attribute-value" id="dex-value"></div>
-        <div class="attribute-rolls" id="dex-rolls"></div>
-    </div>
-
-    <div class="attribute">
-        <div class="attribute-name">Willenskraft (Wil)</div>
-        <div class="attribute-value" id="wil-value"></div>
-        <div class="attribute-rolls" id="wil-rolls"></div>
+        <div class="attribute">
+            <div class="attribute-name">Willenskraft (Wil)</div>
+            <div class="attribute-value" id="wil-value"></div>
+            <div class="attribute-rolls" id="wil-rolls"></div>
+        </div>
     </div>
 
     <div class="hp">
         <div class="attribute-name">Trefferpunkte</div>
         <div class="attribute-value" id="hp-value"></div>
-        <div class="attribute-name">Kerne</div>
-        <div class="attribute-value" id="pip-value"></div>
     </div>
-
-    <div class="background-info">
+    
+    <div class="attribute">
         <div class="attribute-name">Hintergrund</div>
         <div class="attribute-value" id="background-name"></div>
-        <div class="attribute-rolls" id="background-items"></div>
+    </div>
+
+    <div class="item-list">
+        <div class="item"><span class="item-label">1</span><span id="item-1"></span></div>
+        <div class="item"><span class="item-label">2</span><span id="item-2"></span></div>
+        <div class="item"><span class="item-label">3</span><span id="item-3"></span></div>
+        <div class="item"><span class="item-label">4</span><span id="item-4"></span></div>
+        <div class="item"><span class="item-label">5</span><span id="item-5"></span></div>
+        <div class="item"><span class="item-label">6</span><span id="item-6"></span></div>
+        <div class="item"><span class="item-label">7</span><span id="item-7"></span></div>
+        <div class="item"><span class="item-label">8</span><span id="item-8"></span></div>
+        <div class="item"><span class="item-label">9</span><span id="item-9"></span></div>
+        <div class="item"><span class="item-label">10</span><span id="item-10"></div>
     </div>
 
     <div class="actions">
@@ -61,7 +73,6 @@
         <button id="swap-str-wil" onclick="swapAttributes('str', 'wil')">Str &lt;-> Wil</button>
         <button id="swap-dex-wil" onclick="swapAttributes('dex', 'wil')">Dex &lt;-> Wil</button>
     </div>
-
 </div>
 
 <div class="character-cards-container" id="character-cards-container"></div>
