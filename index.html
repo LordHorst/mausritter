@@ -13,15 +13,34 @@ e<!DOCTYPE html>
 <div class="character-sheet">
     <h1>Mausritter Charakter-Generator</h1>
     
-    <div class="name-field">
-        <label for="name-input" class="name-label">Name</label>
-        <input type="text" id="name-input" value="">
+    <div class="header-container">
+        <div class="name-background-div">
+            <div class="name-input-container">
+                <label for="name-input" class="name-label">Name</label>
+                <input type="text" id="name-input" value="">
+            </div>
+            <div class="background-div">
+                <div class="background-label">Hintergrund</div>
+                <div class="background-value" id="background-name"></div>
+            </div>
+        </div>
+        
+        <div class="personal-traits">
+            <div class="trait-field">
+                <div class="trait-name">Geburtszeichen</div>
+                <div class="trait-value" id="birth-sign-value"></div>
+            </div>
+            <div class="trait-field">
+                <div class="trait-name">Fell</div>
+                <div class="trait-value" id="fur-value"></div>
+            </div>
+            <div class="trait-field">
+                <div class="trait-name">Körperliches Merkmal</div>
+                <div class="trait-value" id="physical-trait-value"></div>
+            </div>
+        </div>
     </div>
-    <div class="attribute">
-        <div class="attribute-name">Hintergrund</div>
-        <div class="attribute-value" id="background-name"></div>
-    </div>
-    
+
     <div class="attribute-container-wrapper">
         <div class="description-field">
             <div class="attribute-name">Beschreibung</div>
@@ -61,7 +80,7 @@ e<!DOCTYPE html>
             </div>
         </div>
     </div>
-
+    
     <div class="item-list">
         <div class="item"><span class="item-label">1</span><span id="item-1"></span></div>
         <div class="item"><span class="item-label">2</span><span id="item-2"></span></div>
