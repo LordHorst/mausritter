@@ -39,6 +39,12 @@ function generateNewCharacter() {
     const pips = rollD6();
     const name = generateName();
 
+     // Finde den passenden Hintergrund im Array
+    const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == pips);
+    const backgroundText = background ? background["Beruf/Hintergrund"] : "Unbekannt";
+    const itemA = background ? background["Gegenstand A"] : "Nichts";
+    const itemB = background ? background["Gegenstand B"] : "Nichts";
+
     document.getElementById("name-input").value = name;
     document.getElementById("str-value").innerHTML = strength.value;
     document.getElementById("str-rolls").innerHTML = strength.rolls;
@@ -48,6 +54,8 @@ function generateNewCharacter() {
     document.getElementById("wil-rolls").innerHTML = willpower.rolls;
     document.getElementById("hp-value").innerHTML = hitPoints;
     document.getElementById("pip-value").innerHTML = pips;
+    document.getElementById("background-name").innerHTML = backgroundText;
+    document.getElementById("background-items").innerHTML = `Gegenstände: ${itemA}, ${itemB}`;
 
     //get background for charakter
     const background = parseCSV(hbackgroundCSV);
