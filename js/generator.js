@@ -76,7 +76,7 @@ const backgroundCSV = `HP;Kerne;Beruf/Hintergrund;Gegenstand A;Gegenstand B
 3;3;Zinnbergbauer;Spitzhacke (Mittel, 1W6/1W8);Laterne
 3;4;Müllsammler;Müllhaken (Schwer, 1W10);Spiegel
 3;5;Mauerläufer;Angelhaken;Faden, Spule
-3;6;Händler;Gefährte: Packratte;20 Pips IOU von einem Edelnager
+3;6;Händler;Gefährte: Packratte;Schuldschein über 20 Kerne von einem Edelnager
 4;1;Floßcrew;Hammer (Mittel, 1W6/1W8);Holzspieße
 4;2;Wurmfänger;Stange, 6 Zoll;Seife
 4;3;Spatzenreiter;Angelhaken;Schutzbrille
