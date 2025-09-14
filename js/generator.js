@@ -97,11 +97,18 @@ function generateAttribute() {
 
 function generateName() {
     const names = [
-        "Fenchel", "Sandi", "Ringelchen", "Wermuth", "Salbei", "Klee", "Minze", 
-        "Hagebutte", "Pilz", "Eichel", "Kiesel", "Krümel", "Flausche", "Glöckchen",
-        "Pip", "Fitzel", "Pünktchen", "Rudi", "Flick", "Acker", "Butz", "Dorn", 
-        "Fell", "Honig", "Käse", "Löwenzahn", "Nüsschen", "Pfeffer", "Rinde", "Spitz",
-        "Waldo", "Zwiebel", "Knopf", "Samt", "Piep", "Socke", "Katz", "Mücke"
+        "Ada", "Achat", "Agnes", "Aloe", "April", "Azalee", "Bucht", "Tollkirsche", "Blüte", "Brie",
+        "Brynn", "Kirsche", "Claire", "Krokus", "Dahlie", "Gänseblümchen", "Else", "Smaragd", "Erin",
+        "Grace", "Gwendoline", "Haselnuss", "Heide", "Hette", "Stechpalme", "Hyazinthe", "Iris",
+        "Wacholder", "Lavendel", "Lilie", "Magnolie", "Ringelblume", "Majoran", "Myrte", "Odette",
+        "Olive", "Opal", "Perle", "Pfeffer", "Mohn", "Rosmarin", "Raute", "Safran", "Sandi",
+        "Sassafras", "Schiefer", "Susan", "Distel", "Veilchen", "Weide", "Erle", "Ambrosius",
+        "Anis", "Annotto", "August", "Avens", "Basilikum", "Beryll", "Birke", "Boldo", "Bill",
+        "Klette", "Butter", "Cassia", "Wegwarte", "Clive", "Colby", "Dill", "Ampfer", "Dock",
+        "Eared", "Edmund", "Elmer", "Ernest", "Fenchel", "Festus", "Franz", "Gil", "Weißdorn",
+        "Heide", "Horatio", "Jack", "Jaspis", "Konrad", "Rittersporn", "Lorbeer", "Lorenz", "Muskat",
+        "Oliver", "Orin", "Reepicheep", "Eberesche", "Simon", "Sauerampfer", "Stilton", "Estragon",
+        "Warren", "Wattle", "Whitacre", "Wermuth", "Schafgarbe"
     ];
     
     return names[Math.floor(Math.random() * names.length)];
