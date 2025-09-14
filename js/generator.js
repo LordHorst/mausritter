@@ -62,6 +62,18 @@ function getCookie(name) {
 }
 
 function saveCharacter() {
+    // Validierungsprüfung: Überprüft, ob alle Felder gefüllt sind
+    if (
+        document.getElementById("name-input").value.trim() === "" ||
+        document.getElementById("str-value").innerHTML.trim() === "" ||
+        document.getElementById("dex-value").innerHTML.trim() === "" ||
+        document.getElementById("wil-value").innerHTML.trim() === "" ||
+        document.getElementById("hp-value").innerHTML.trim() === ""
+    ) {
+        alert("Fehler: Bitte generieren Sie zuerst einen vollständigen Charakter, bevor Sie ihn speichern.");
+        return; // Bricht die Funktion ab, wenn ein Feld leer ist
+    }
+
     const characterData = {
         name: document.getElementById("name-input").value,
         strengthValue: document.getElementById("str-value").innerHTML,
