@@ -594,7 +594,7 @@ window.onload = function() {
         generateNewCharacter();
     }
     
-    //deleteButton.disabled = savedCharacters.length === 0;
+    deleteButton.disabled = savedCharacters.length === 0;
 
     renderSavedCharacters();
 };
