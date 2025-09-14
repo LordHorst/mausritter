@@ -111,7 +111,7 @@ function parseCSV(csvString) {
   
   const result = [];
   for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v => v.replace(/"/g, ''));
+    const values = lines[i].match(/(".*?"|[^";\s]+)(?=\s*;|\s*$)/g).map(v => v.replace(/"/g, ''));
     const entry = {};
     headers.forEach((header, index) => {
       entry[header] = values[index];
