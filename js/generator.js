@@ -521,6 +521,69 @@ function swapAttributes(attr1, attr2) {
     }
 }
 
+function exportCharacters() {
+    const characters = getSavedCharacters();
+    if (characters.length === 0) {
+        alert("Es gibt keine Charaktere zum Exportieren.");
+        return;
+    }
+
+    const dataStr = JSON.stringify(characters, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mausritter-charaktere.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert("Charaktere erfolgreich exportiert!");
+}
+
+function importCharacters() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.style.display = 'none';
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                const importedChars = JSON.parse(event.target.result);
+                if (Array.isArray(importedChars)) {
+                    localStorage.setItem('mausritter_chars', JSON.stringify(importedChars));
+                    alert(`Erfolgreich ${importedChars.length} Charaktere importiert!`);
+                    renderSavedCharacters();
+                    // Stelle sicher, dass die Benutzeroberfläche nach dem Import aktualisiert wird
+                    if (importedChars.length > 0) {
+                        loadCharacter(0);
+                    } else {
+                        generateNewCharacter();
+                    }
+                    document.getElementById("delete-character").disabled = importedChars.length === 0;
+                } else {
+                    alert("Die importierte Datei ist kein gültiges Charakter-Array.");
+                }
+            } catch (error) {
+                alert("Fehler beim Parsen der Datei. Bitte stellen Sie sicher, dass es sich um eine gültige JSON-Datei handelt.");
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
+}
+
 window.onload = function() {
     const deleteButton = document.getElementById("delete-character");
     const savedCharacters = getSavedCharacters();
