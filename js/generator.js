@@ -164,7 +164,7 @@ const physicalDetails = {
 
 /*Würfel*/
 function rollXSidedDie(x){
-    if(Number.IsInteger(x)){
+    if(Number.isInteger(x)){
         return Math.floor(Math.random() * x) + 1;
     }
     return 0;
