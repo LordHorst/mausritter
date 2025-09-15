@@ -163,17 +163,17 @@ const physicalDetails = {
 };
 
 /*Würfel*/
-function rollD6() {
-    return Math.floor(Math.random() * 6) + 1;
-}
-function rollD8() {
-    return Math.floor(Math.random() * 8) + 1;
+function rollXSidedDie(x){
+    if(Number.IsInteger(x)){
+        return Math.floor(Math.random() * x) + 1;
+    }
+    return 0;
 }
 /*Würfel Ende*/
 
 function generateTant() {
-    const d6 = rollD6();
-    const d8 = rollD8();
+    const d6 = rollXSidedDie(6);
+    const d8 = rollXSidedDie(8);
 
     if (d6 === 1) {
         // Fall 1: W6 = 1 -> Extra Pips
@@ -234,9 +234,9 @@ function parseCSV(csvString) {
 const backgrounds = parseCSV(backgroundCSV);
 
 function generateAttribute() {
-    const roll1 = rollD6();
-    const roll2 = rollD6();
-    const roll3 = rollD6();
+    const roll1 = rollXSidedDie(6);
+    const roll2 = rollXSidedDie(6);
+    const roll3 = rollXSidedDie(6);
     
     const rolls = [roll1, roll2, roll3].sort((a, b) => b - a);
     
@@ -269,22 +269,22 @@ function generateName() {
 }
 
 function generateBirthsign() {
-    const roll = rollD6();
+    const roll = rollXSidedDie(6);
     const sign = birthsigns[roll];
     document.getElementById("birth-sign-value").innerHTML = sign;
 }
 
 function generateCoat() {
-    const colorRoll = rollD6();
-    const patternRoll = rollD6();
+    const colorRoll = rollXSidedDie(6);
+    const patternRoll = rollXSidedDie(6);
     const color = coatColors[colorRoll];
     const pattern = coatPatterns[patternRoll];
     document.getElementById("fur-value").innerHTML = `${color}, ${pattern}`;
 }
 
 function generatePhysicalTrait() {
-    const roll1 = rollD6();
-    const roll2 = rollD6();
+    const roll1 = rollXSidedDie(6);
+    const roll2 = rollXSidedDie(6);
     const d66 = parseInt(`${roll1}${roll2}`);
     const trait = physicalDetails[d66] || "Unbekanntes Merkmal";
     document.getElementById("physical-trait-value").innerHTML = trait;
@@ -294,8 +294,8 @@ function generateNewCharacter() {
     const strength = generateAttribute();
     const dexterity = generateAttribute();
     const willpower = generateAttribute();
-    const hitPoints = rollD6();
-    const pips = rollD6();
+    const hitPoints = rollXSidedDie(6);
+    const pips = rollXSidedDie(6);
     const name = generateName();
 
     const background = backgrounds.find(bg => bg.HP == hitPoints && bg.Kerne == pips);
